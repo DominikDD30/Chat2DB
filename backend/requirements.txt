@@ -1,0 +1,9 @@
+fastapi
+uvicorn
+pydantic
+requests
+boto3
+botocore
+mangum
+load_dotenv
+tiktoken

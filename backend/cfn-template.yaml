@@ -1,0 +1,123 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: FastAPI Lambda with DynamoDB and HTTP API Gateway
+
+Parameters:
+  FunctionName:
+    Type: String
+    Default: chat2db
+  TableName:
+    Type: String
+    Default: Chat2dbTokenUsage
+  S3BucketName:
+    Type: String
+    Description: "S3 bucket containing Lambda deployment zip"
+
+Resources:
+
+  ## DynamoDB Table
+  MyDynamoTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: !Ref TableName
+      BillingMode: PAY_PER_REQUEST
+      AttributeDefinitions:
+        - AttributeName: year_month
+          AttributeType: S
+      KeySchema:
+        - AttributeName: year_month
+          KeyType: HASH
+
+  ## IAM Role for Lambda
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      RoleName: !Sub "${FunctionName}-exec-role"
+      AssumeRolePolicyDocument:
+        Version: '2012-10-17'
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: DynamoDBAccess
+          PolicyDocument:
+            Version: '2012-10-17'
+            Statement:
+              - Effect: Allow
+                Action:
+                  - dynamodb:PutItem
+                  - dynamodb:GetItem
+                  - dynamodb:Query
+                  - dynamodb:Scan
+                  - dynamodb:UpdateItem
+                  - dynamodb:DeleteItem
+                Resource: !GetAtt MyDynamoTable.Arn
+              - Effect: Allow
+                Action:
+                  - logs:CreateLogGroup
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: "*"
+
+  ## Lambda Function
+  FastApiLambda:
+    Type: AWS::Lambda::Function
+    Properties:
+      FunctionName: !Ref FunctionName
+      Handler: main.handler
+      Role: !GetAtt LambdaExecutionRole.Arn
+      Runtime: python3.12
+      MemorySize: 512
+      Timeout: 30
+      Code:
+        S3Bucket: !Ref S3BucketName
+        S3Key: chat2db.zip
+      Environment:
+        Variables:
+          APP_MODE: lambda
+          TABLE_NAME: !Ref TableName
+
+  ## API Gateway HTTP API
+  HttpApi:
+    Type: AWS::ApiGatewayV2::Api
+    Properties:
+      Name: FastApiHttpApi
+      ProtocolType: HTTP
+      Target: !GetAtt FastApiLambda.Arn
+
+  ApiIntegration:
+    Type: AWS::ApiGatewayV2::Integration
+    Properties:
+      ApiId: !Ref HttpApi
+      IntegrationType: AWS_PROXY
+      IntegrationUri: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:${FunctionName}"
+      PayloadFormatVersion: "2.0"
+
+  ApiRoute:
+    Type: AWS::ApiGatewayV2::Route
+    Properties:
+      ApiId: !Ref HttpApi
+      RouteKey: "ANY /{proxy+}"
+      Target: !Sub "integrations/${ApiIntegration}"
+
+
+  ## Lambda Permission for API Gateway
+  LambdaInvokePermission:
+    Type: AWS::Lambda::Permission
+    Properties:
+      FunctionName: !Ref FastApiLambda
+      Action: lambda:InvokeFunction
+      Principal: apigateway.amazonaws.com
+      SourceArn: !Sub "arn:aws:execute-api:${AWS::Region}:${AWS::AccountId}:${HttpApi}/*/*"
+
+Outputs:
+  ApiUrl:
+    Description: "API Gateway endpoint"
+    Value: !Sub "https://${HttpApi}.execute-api.${AWS::Region}.amazonaws.com"
+
+  TableName:
+    Value: !Ref MyDynamoTable
+
+  LambdaName:
+    Value: !Ref FastApiLambda
