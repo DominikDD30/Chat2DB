@@ -1,7 +1,5 @@
 import json
-
 from pydantic import ValidationError
-
 from models import SchemaRequest, SchemaResponse, DbSchema, Table, Column, Relation
 from prompts.database_prompts import DatabasePrompts
 

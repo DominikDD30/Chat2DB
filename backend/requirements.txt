@@ -7,3 +7,4 @@ botocore
 mangum
 load_dotenv
 tiktoken
+sqlglot

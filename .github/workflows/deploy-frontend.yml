@@ -26,7 +26,7 @@ jobs:
 
       - name: Build project
         env:
-          REACT_APP_BACKEND_URL: https://api.myproductionbackend.com
+          VITE_REACT_APP_BACKEND_URL: https://2q5az63w49.execute-api.eu-north-1.amazonaws.com/
         run: npm run build
 
       - name: Deploy to Netlify
