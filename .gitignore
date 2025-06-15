@@ -1,0 +1,87 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.env
+.venv/
+venv/
+pip-wheel-metadata/
+*.log
+*.sqlite3
+.DS_Store
+
+# FastAPI / Uvicorn
+instance/
+*.db
+*.pem
+
+# LangChain / OpenAI keys
+.env
+.env.*
+
+# VSCode
+.vscode/
+
+# mypy / pyright
+.mypy_cache/
+.pyright/
+
+# Coverage
+htmlcov/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+
+# React / Node.js
+node_modules/
+build/
+dist/
+*.log
+*.tsbuildinfo
+.cache/
+.env.local
+.env.development
+.env.test
+.env.production
+
+# Yarn / pnpm / npm
+.yarn/
+.pnp/
+.pnp.js
+.yarn-cache/
+.yarnrc.yml
+.npmrc
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Testing (Jest / Cypress / Playwright)
+coverage/
+.nyc_output/
+cypress/screenshots/
+cypress/videos/
+playwright-report/
+test-results/
+
+# IDEs / Editors
+.idea/
+*.swp
+*.swo
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# Git
+.git/
