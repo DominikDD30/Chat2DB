@@ -11,6 +11,9 @@ Parameters:
   S3BucketName:
     Type: String
     Description: "S3 bucket containing Lambda deployment zip"
+  OpenaiApiKey:
+    Type: String
+    Description: "OpenAI API Key"
 
 Resources:
 
@@ -77,6 +80,7 @@ Resources:
         Variables:
           APP_MODE: lambda
           TABLE_NAME: !Ref TableName
+          OPENAI_API_KEY: !Ref OpenaiApiKey
 
   ## API Gateway HTTP API
   HttpApi:

@@ -51,4 +51,5 @@ jobs:
                 FunctionName=chat2db \
                 TableName=Chat2dbTokenUsage \
                 S3BucketName=$S3_BUCKET \
+                OpenaiApiKey=${{ secrets.OPENAI_API_KEY }} \
             --region  ${{ env.AWS_REGION }}
