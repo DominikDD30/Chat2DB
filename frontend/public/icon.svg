@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <rect width="64" height="64" rx="12" fill="#1D4ED8"></rect>
+  <!-- Cylinder bazy danych -->
+  <ellipse cx="32" cy="18" rx="16" ry="6" fill="#2563EB"></ellipse>
+  <rect x="16" y="18" width="32" height="24" fill="#3B82F6"></rect>
+  <ellipse cx="32" cy="42" rx="16" ry="6" fill="#2563EB"></ellipse>
+  <!-- Chat balonik -->
+  <path d="M20 20h24a4 4 0 014 4v12a4 4 0 01-4 4H28l-8 6v-6h-0.5a4 4 0 01-4-4V24a4 4 0 014-4z" fill="white"></path>
+  <circle cx="24" cy="32" r="2" fill="#1D4ED8"></circle>
+  <circle cx="32" cy="32" r="2" fill="#1D4ED8"></circle>
+  <circle cx="40" cy="32" r="2" fill="#1D4ED8"></circle>
+</svg>
