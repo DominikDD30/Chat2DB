@@ -16,12 +16,14 @@ type Props = {
   onUpdateDb: (newDb: DatabaseSchema) => void;
 };
 
-const backendUrl = import.meta.env.VITE_REACT_APP_BACKEND_URL;
+
 
 
 export type ChatPanelHandle = {
   pushMessage: (content: string) => void;
 };
+
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
 
 const ChatPanel = forwardRef<ChatPanelHandle, Props>(
   ({ currentDb, onUpdateDb }, ref) => {

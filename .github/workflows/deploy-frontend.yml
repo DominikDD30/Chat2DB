@@ -25,9 +25,9 @@ jobs:
         run: npm install
 
       - name: Build project
-        env:
-          VITE_REACT_APP_BACKEND_URL: https://2q5az63w49.execute-api.eu-north-1.amazonaws.com/
         run: npm run build
+        env:
+          VITE_BACKEND_URL: https://2q5az63w49.execute-api.eu-north-1.amazonaws.com
 
       - name: Deploy to Netlify
         uses: nwtgck/actions-netlify@v3.0.0
