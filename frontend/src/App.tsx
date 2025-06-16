@@ -5,6 +5,8 @@ import type { DatabaseSchema, Table, Relation } from "./types";
 import FooterPanel from "./components/FooterPanel";
 import { validateSchema } from "./validateSchema";
 
+const backendUrl = import.meta.env.VITE_BACKEND_URL;
+
 function App() {
   const [isTooSmallScreen, setIsTooSmallScreen] = useState(false);
   const [currentDb, setCurrentDb] = useState<DatabaseSchema>({
@@ -47,7 +49,7 @@ function App() {
   const handleGenerateDb = async () => {
   setIsLoading(true);
   try {
-    const response = await fetch("http://localhost:5050/generate/dbsql", {
+    const response = await fetch(`${backendUrl}/generate/dbsql`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
